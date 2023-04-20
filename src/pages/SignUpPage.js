@@ -29,9 +29,7 @@ export default function SignUpPage() {
     setIsLoading(true)
     await axios.post("https://my-whallet-api.onrender.com/cadastro", { name: nome, email: email, password: senha })
       .then((answer) => {
-        if (answer.data.status === 201) {
           navigate("/")
-        }
       })
       .catch((error) => { alert(error.response.statusText) })
     setIsLoading(false)
