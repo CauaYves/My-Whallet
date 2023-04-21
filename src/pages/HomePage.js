@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import { BiExit } from "react-icons/bi"
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai"
+import { Link } from "react-router-dom"
 
 export default function HomePage() {
   return (
@@ -37,14 +38,20 @@ export default function HomePage() {
 
 
       <ButtonsContainer>
-        <button>
-          <AiOutlinePlusCircle />
-          <p>Nova <br /> entrada</p>
-        </button>
-        <button>
-          <AiOutlineMinusCircle />
-          <p>Nova <br />saída</p>
-        </button>
+          <Link to="/nova-transacao/:tipo">
+            <button>
+              <AiOutlinePlusCircle />
+              <p>Nova <br /> entrada</p>
+            </button>
+          </Link>
+
+          <Link to="/nova-transacao/:tipo">
+            <button>
+              <AiOutlineMinusCircle />
+              <p>Nova <br />saída</p>
+            </button>
+          </Link>
+
       </ButtonsContainer>
 
     </HomeContainer>
@@ -90,7 +97,7 @@ const ButtonsContainer = styled.section`
   gap: 15px;
   
   button {
-    width: 50%;
+    width: calc(50vw - 32px);
     height: 115px;
     font-size: 22px;
     text-align: left;
