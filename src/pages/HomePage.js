@@ -2,12 +2,34 @@ import styled from "styled-components"
 import { BiExit } from "react-icons/bi"
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai"
 import { Link } from "react-router-dom"
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import contextApi from "../context/contextapi"
+import axios from "axios"
+import ListItem from "../components/ListItem"
 
 export default function HomePage() {
-
   const { username } = useContext(contextApi)
+  const token = localStorage.getItem("token")
+
+  const [operations, setOperations] = useState([])
+
+  useEffect(() => {
+    axios.get(`${process.env.REACT_APP_API_URL}/operations`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(answer => {
+        console.log(answer.data)
+        setOperations(answer.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }, [])
+
+
 
   return (
     <HomeContainer>
@@ -15,26 +37,17 @@ export default function HomePage() {
         <h1>Olá, {username}</h1>
         <BiExit />
       </Header>
-
       <TransactionsContainer>
         <ul>
-          <ListItemContainer>
-            <div>
-              <span>30/11</span>
-              <strong>Almoço mãe</strong>
-            </div>
-            <Value color={"negativo"}>120,00</Value>
-          </ListItemContainer>
-
-          <ListItemContainer>
-            <div>
-              <span>15/11</span>
-              <strong>Salário</strong>
-            </div>
-            <Value color={"positivo"}>3000,00</Value>
-          </ListItemContainer>
+          {operations.length === 0 ? (
+            <div>Não há operações disponíveis.</div>
+          ) : (
+            operations.map((data, index) => {
+              return <ListItem key={index} data={data} />;
+            })
+          )}
         </ul>
-
+        {/* soma de todos os valores */}
         <article>
           <strong>Saldo</strong>
           <Value color={"positivo"}>2880,00</Value>
