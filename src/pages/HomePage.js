@@ -1,19 +1,27 @@
 import styled from "styled-components"
 import { BiExit } from "react-icons/bi"
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useContext, useEffect, useState } from "react"
 import contextApi from "../context/contextapi"
 import axios from "axios"
 import ListItem from "../components/ListItem"
+import { CircleLoader } from "react-spinners"
 
 export default function HomePage() {
+
   const { username } = useContext(contextApi)
   const token = localStorage.getItem("token")
-
+  const navigate = useNavigate()
   const [operations, setOperations] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [totalSum, setTotalSum] = useState("")
+  const Navigate = useNavigate()
 
   useEffect(() => {
+    haveToken()
+    totalValue()
+    setIsLoading(true)
     axios.get(`${process.env.REACT_APP_API_URL}/operations`,
       {
         headers: {
@@ -21,36 +29,58 @@ export default function HomePage() {
         }
       })
       .then(answer => {
-        console.log(answer.data)
         setOperations(answer.data)
+        setIsLoading(false)
       })
       .catch(error => {
         console.log(error)
+        setIsLoading(false)
       })
   }, [])
 
+  function haveToken() {
+    const token = localStorage.getItem("token")
+    if (!token) {
+      navigate("/")
+    }
+  }
+  function logout() {
 
+    localStorage.removeItem("token")
+    Navigate("/")
+  }
+  function totalValue() {
+    const total = operations.map((transf, index) => {
+      let sinal = transf.type
+      let value = transf.value
+      return sinal + value
+    })
+    const result = eval(total.join(""))
+    setTotalSum(result)
+  }
 
   return (
     <HomeContainer>
       <Header>
         <h1>Olá, {username}</h1>
-        <BiExit />
+        <LogoutBtn onClick={logout}>
+          <BiExit />
+        </LogoutBtn>
       </Header>
       <TransactionsContainer>
         <ul>
-          {operations.length === 0 ? (
-            <div>Não há operações disponíveis.</div>
-          ) : (
-            operations.map((data, index) => {
-              return <ListItem key={index} data={data} />;
-            })
-          )}
+          {
+            operations.length === 0 ? (<div>Não há registros de entrada ou saída.</div>) :
+              isLoading ? (<SpinContainer>
+                <CircleLoader color="purple" />
+              </SpinContainer>) :
+                (operations.map((data, index) => { return <ListItem key={index} data={data} />; }))
+          }
         </ul>
         {/* soma de todos os valores */}
         <article>
           <strong>Saldo</strong>
-          <Value color={"positivo"}>2880,00</Value>
+          <Value color={"positivo"}>{totalSum}</Value>
         </article>
       </TransactionsContainer>
 
@@ -132,15 +162,16 @@ const Value = styled.div`
   text-align: right;
   color: ${(props) => (props.color === "positivo" ? "green" : "red")};
 `
-const ListItemContainer = styled.li`
+const LogoutBtn = styled.button`
+  width: 45px;
+  height: 45px;
+  background-color: transparent;
+`
+const SpinContainer = styled.div`
+  width: 100%;
+  height: calc(100vh - 330px);
+
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
-  color: #000000;
-  margin-right: 10px;
-  div span {
-    color: #c6c6c6;
-    margin-right: 10px;
-  }
+  justify-content: center;
 `

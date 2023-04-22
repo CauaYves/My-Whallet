@@ -1,17 +1,27 @@
 import styled from "styled-components"
-import contextApi from "../context/contextapi"
-import { useContext, useState } from "react"
+import { useEffect, useState } from "react"
 import axios from "axios"
 import { RotateLoader } from "react-spinners"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 
 export default function TransactionsPage() {
   const { tipo } = useParams()
-  const { sendValue, setSendValue } = useContext(contextApi)
   const [valueAdd, setValueAdd] = useState("")
   const [description, setDescription] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const navigate = useNavigate()
 
+  useEffect(() => {
+    haveToken()
+  }, [])
+
+
+  function haveToken() {
+    const token = localStorage.getItem("token")
+    if (!token) {
+      navigate("/")
+    }
+  }
 
   function increaseCash(e) {
     e.preventDefault()
@@ -27,13 +37,13 @@ export default function TransactionsPage() {
         }
       })
       .then(answer => {
-        console.log(answer)
         setIsLoading(false)
       })
       .catch(error => {
-        console.log(error)
+        alert(error)
         setIsLoading(false)
       })
+    navigate("/home")
   }
 
   return (
@@ -56,7 +66,7 @@ export default function TransactionsPage() {
           required
         />
         <button type="submit">
-        {isLoading ?
+          {isLoading ?
             <RotateLoader color="white" />
             :
             "salva transação"
