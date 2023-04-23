@@ -9,11 +9,8 @@ import { useState } from "react"
 
 export default function App() {
 
-  const [username, setUsername] = useState("")
-  const [sendValue, setSendValue] = useState()
-
   return (
-    <contextApi.Provider value={{username, setUsername}}>
+    <contextApi.Provider value={{}}>
       <PagesContainer>
         <BrowserRouter>
           <Routes>

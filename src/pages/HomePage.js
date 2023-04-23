@@ -2,25 +2,24 @@ import styled from "styled-components"
 import { BiExit } from "react-icons/bi"
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai"
 import { Link, useNavigate } from "react-router-dom"
-import { useContext, useEffect, useState } from "react"
-import contextApi from "../context/contextapi"
+import { useEffect, useState } from "react"
 import axios from "axios"
 import ListItem from "../components/ListItem"
 import { CircleLoader } from "react-spinners"
 
 export default function HomePage() {
 
-  const { username } = useContext(contextApi)
   const token = localStorage.getItem("token")
   const navigate = useNavigate()
   const [operations, setOperations] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [name, setName] = useState("")
   const [totalSum, setTotalSum] = useState("")
   const Navigate = useNavigate()
 
   useEffect(() => {
+
     haveToken()
-    totalValue()
     setIsLoading(true)
     axios.get(`${process.env.REACT_APP_API_URL}/operations`,
       {
@@ -29,8 +28,11 @@ export default function HomePage() {
         }
       })
       .then(answer => {
-        setOperations(answer.data)
+        console.log(answer)
+        setOperations(answer.data.userTransactions)
+        setTotalSum(answer.data.result)
         setIsLoading(false)
+        setName(answer.data.name)
       })
       .catch(error => {
         console.log(error)
@@ -49,20 +51,11 @@ export default function HomePage() {
     localStorage.removeItem("token")
     Navigate("/")
   }
-  function totalValue() {
-    const total = operations.map((transf, index) => {
-      let sinal = transf.type
-      let value = transf.value
-      return sinal + value
-    })
-    const result = eval(total.join(""))
-    setTotalSum(result)
-  }
 
   return (
     <HomeContainer>
       <Header>
-        <h1>Olá, {username}</h1>
+        <h1>Olá, {name}</h1>
         <LogoutBtn onClick={logout}>
           <BiExit />
         </LogoutBtn>
