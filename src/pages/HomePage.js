@@ -73,7 +73,7 @@ export default function HomePage() {
         {/* soma de todos os valores */}
         <article>
           <strong>Saldo</strong>
-          <Value color={"positivo"}>{totalSum}</Value>
+          <Value color={ totalSum <= 0 ? "negativo" : "positivo"}>{totalSum}</Value>
         </article>
       </TransactionsContainer>
 
