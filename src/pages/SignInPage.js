@@ -8,21 +8,17 @@ import { useNavigate, Link } from "react-router-dom"
 export default function SignInPage() {
 
   useEffect(() => {
-    async function fetchData() {
-      console.log(1)
-      const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token")
 
-      await axios.post("https://my-whallet-api.onrender.com/login", { headers: { Authorization: `Bearer ${token}` } })
-        .then(response => {
-          console.log(response.data)
-        })
-        .catch(error => {
-          console.log(error.response)
-        })
-    }
-    console.log(2)
-
-    fetchData();
+    axios.get(`${process.env.REACT_APP_API_URL}/operations`, { headers: { Authorization: `Bearer ${token}` } })
+      .then(answer => {
+        navigate("/home")
+        setIsLoading(false)
+      })
+      .catch(error => {
+        console.log(error)
+        setIsLoading(false)
+      })
   }, []);
 
   const navigate = useNavigate()
