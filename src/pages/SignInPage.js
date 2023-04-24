@@ -1,14 +1,11 @@
 import styled from "styled-components"
 import MyWalletLogo from "../components/MyWalletLogo"
 import { RotateLoader } from "react-spinners"
-import { useContext, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import axios from "axios"
 import { useNavigate, Link } from "react-router-dom"
-import contextApi from "../context/contextapi"
 
 export default function SignInPage() {
-
-  const { setUsername } = useContext(contextApi)
 
   useEffect(() => {
     async function fetchData() {
@@ -39,7 +36,6 @@ export default function SignInPage() {
     await axios.post(`${process.env.REACT_APP_API_URL}/login`, { email: email, password: senha })
       .then((answer) => {
         localStorage.setItem("token", answer.data.token)
-        setUsername(answer.data.name)
         navigate("/home")
       })
       .catch((error) => {
