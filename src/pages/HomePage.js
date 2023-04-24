@@ -10,6 +10,7 @@ import { CircleLoader } from "react-spinners"
 export default function HomePage() {
 
   const token = localStorage.getItem("token")
+  console.log(token)
   const navigate = useNavigate()
   const [operations, setOperations] = useState([])
   const [isLoading, setIsLoading] = useState(false)
@@ -29,6 +30,7 @@ export default function HomePage() {
       })
       .then(answer => {
         console.log(answer)
+        console.log(answer.data.userTransactions.sort((a,b) => a-b))
         setOperations(answer.data.userTransactions)
         setTotalSum(answer.data.result)
         setIsLoading(false)
