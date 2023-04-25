@@ -1,50 +1,100 @@
 import styled from "styled-components"
 import { BiExit } from "react-icons/bi"
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai"
+import { Link, useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react"
+import axios from "axios"
+import ListItem from "../components/ListItem"
+import { CircleLoader } from "react-spinners"
 
 export default function HomePage() {
+
+  const token = localStorage.getItem("token")
+  console.log(token)
+  const navigate = useNavigate()
+  const [operations, setOperations] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [name, setName] = useState("")
+  const [totalSum, setTotalSum] = useState("")
+  const Navigate = useNavigate()
+
+  useEffect(() => {
+
+    haveToken()
+    setIsLoading(true)
+    axios.get(`${process.env.REACT_APP_API_URL}/operations`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(answer => {
+        console.log(answer)
+        console.log(answer.data.userTransactions.sort((a, b) => a - b))
+        setOperations(answer.data.userTransactions)
+        setTotalSum(answer.data.result.toFixed(2))
+        setIsLoading(false)
+        setName(answer.data.name)
+      })
+      .catch(error => {
+        console.log(error)
+        setIsLoading(false)
+      })
+  }, [])
+
+  function haveToken() {
+    const token = localStorage.getItem("token")
+    if (!token) {
+      navigate("/")
+    }
+  }
+  function logout() {
+
+    localStorage.removeItem("token")
+    Navigate("/")
+  }
+
   return (
     <HomeContainer>
       <Header>
-        <h1>Olá, Fulano</h1>
-        <BiExit />
+        <h1>Olá, {name}</h1>
+        <LogoutBtn onClick={logout}>
+          <BiExit />
+        </LogoutBtn>
       </Header>
-
       <TransactionsContainer>
         <ul>
-          <ListItemContainer>
-            <div>
-              <span>30/11</span>
-              <strong>Almoço mãe</strong>
-            </div>
-            <Value color={"negativo"}>120,00</Value>
-          </ListItemContainer>
-
-          <ListItemContainer>
-            <div>
-              <span>15/11</span>
-              <strong>Salário</strong>
-            </div>
-            <Value color={"positivo"}>3000,00</Value>
-          </ListItemContainer>
+          {
+            operations.length === 0 ? (<div>Não há registros de entrada ou saída.</div>) :
+              isLoading ? (<SpinContainer>
+                <CircleLoader color="purple" />
+              </SpinContainer>) :
+                (operations.map((data, index) => { return <ListItem key={index} data={data} />; }))
+          }
         </ul>
-
-        <article>
+        {/* soma de todos os valores */}
+        <SoldBar>
           <strong>Saldo</strong>
-          <Value color={"positivo"}>2880,00</Value>
-        </article>
+          <Value color={totalSum <= 0 ? "negativo" : "positivo"}>{totalSum}</Value>
+        </SoldBar>
       </TransactionsContainer>
 
 
       <ButtonsContainer>
-        <button>
-          <AiOutlinePlusCircle />
-          <p>Nova <br /> entrada</p>
-        </button>
-        <button>
-          <AiOutlineMinusCircle />
-          <p>Nova <br />saída</p>
-        </button>
+        <Link to="/nova-transacao/+">
+          <button>
+            <AiOutlinePlusCircle />
+            <p>Nova <br /> entrada</p>
+          </button>
+        </Link>
+
+        <Link to="/nova-transacao/-">
+          <button>
+            <AiOutlineMinusCircle />
+            <p>Nova <br />saída</p>
+          </button>
+        </Link>
+
       </ButtonsContainer>
 
     </HomeContainer>
@@ -70,18 +120,12 @@ const TransactionsContainer = styled.article`
   background-color: #fff;
   color: #000;
   border-radius: 5px;
-  padding: 16px;
+  padding: 16px 16px 22px 16px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  article {
-    display: flex;
-    justify-content: space-between;   
-    strong {
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-  }
+
+  overflow-y: auto;
 `
 const ButtonsContainer = styled.section`
   margin-top: 15px;
@@ -90,7 +134,7 @@ const ButtonsContainer = styled.section`
   gap: 15px;
   
   button {
-    width: 50%;
+    width: calc(50vw - 32px);
     height: 115px;
     font-size: 22px;
     text-align: left;
@@ -107,15 +151,30 @@ const Value = styled.div`
   text-align: right;
   color: ${(props) => (props.color === "positivo" ? "green" : "red")};
 `
-const ListItemContainer = styled.li`
+const LogoutBtn = styled.button`
+  width: 45px;
+  height: 45px;
+  background-color: transparent;
+`
+const SpinContainer = styled.div`
+  width: 100%;
+  height: calc(100vh - 330px);
+
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
-  color: #000000;
-  margin-right: 10px;
-  div span {
-    color: #c6c6c6;
-    margin-right: 10px;
-  }
+  justify-content: center;
+`
+const SoldBar = styled.div`
+  width: calc(100% - 50px);
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  text-transform: uppercase;
+  font-weight: 700;
+
+  position: absolute;
+  right: 4.8%;
+  bottom: 27%;
 `

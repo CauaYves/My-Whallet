@@ -28,12 +28,10 @@ export default function SignUpPage() {
     if (!passwordIsEquals(senha, confirmSenha)) return alert("as senhas não coincidem")
     setIsLoading(true)
     await axios.post("https://my-whallet-api.onrender.com/cadastro", { name: nome, email: email, password: senha })
-      .then((answer) => {
-        if (answer.data.status === 201) {
+      .then(() => {
           navigate("/")
-        }
       })
-      .catch((error) => { alert(error.response.statusText) })
+      .catch((error) => { alert(error) })
     setIsLoading(false)
   }
 

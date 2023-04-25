@@ -1,14 +1,27 @@
 import styled from "styled-components"
 import MyWalletLogo from "../components/MyWalletLogo"
 import { RotateLoader } from "react-spinners"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import axios from "axios"
 import { useNavigate, Link } from "react-router-dom"
 
 export default function SignInPage() {
 
-  const navigate = useNavigate()
+  useEffect(() => {
+    const token = localStorage.getItem("token")
 
+    axios.get(`${process.env.REACT_APP_API_URL}/operations`, { headers: { Authorization: `Bearer ${token}` } })
+      .then(answer => {
+        navigate("/home")
+        setIsLoading(false)
+      })
+      .catch(error => {
+        console.log(error)
+        setIsLoading(false)
+      })
+  }, []);
+
+  const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
   const [email, setEmail] = useState("")
   const [senha, setSenha] = useState("")
@@ -16,14 +29,14 @@ export default function SignInPage() {
   async function login(e) {
     e.preventDefault()
     setIsLoading(true)
-    await axios.post("https://my-whallet-api.onrender.com/login", {email: email, password: senha})
-    .then((answer) => {
-      console.log(answer)
-      navigate("/home")
-    })
-    .catch((error) => {
-      alert(error.response.statusText)
-    })
+    await axios.post(`${process.env.REACT_APP_API_URL}/login`, { email: email, password: senha })
+      .then((answer) => {
+        localStorage.setItem("token", answer.data.token)
+        navigate("/home")
+      })
+      .catch((error) => {
+        alert(error)
+      })
     setIsLoading(false)
   }
 
@@ -31,19 +44,14 @@ export default function SignInPage() {
     <SingInContainer>
       <form onSubmit={login}>
         <MyWalletLogo />
-        <input placeholder="E-mail" type="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
-        <input placeholder="Senha" type="password" autoComplete="new-password" value={senha} onChange={(e) => setSenha(e.target.value)} />
+        <input placeholder="E-mail" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <input placeholder="Senha" type="password" value={senha} onChange={(e) => setSenha(e.target.value)} />
         <SubmitBtn>
-          {isLoading ?
-            <RotateLoader color="white" />
-            :
-            "entrar"
-          }</SubmitBtn>
+          {isLoading ? <RotateLoader color="white" /> : "entrar"}
+        </SubmitBtn>
       </form>
 
-      <Link to="/cadastro">
-        Primeira vez? Cadastre-se!
-      </Link>
+      <Link to="/cadastro">Primeira vez? Cadastre-se!</Link>
     </SingInContainer>
   )
 }
@@ -61,5 +69,4 @@ const SubmitBtn = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  
 `
