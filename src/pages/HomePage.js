@@ -31,7 +31,7 @@ export default function HomePage() {
       .then(answer => {
         console.log(answer)
         console.log(answer.data.userTransactions.sort((a, b) => a - b))
-        setOperations(answer.data.userTransactions)
+        setOperations(answer.data.userTransactions.reverse())
         setTotalSum(answer.data.result.toFixed(2))
         setIsLoading(false)
         setName(answer.data.name)
