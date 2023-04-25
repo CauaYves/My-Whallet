@@ -30,7 +30,7 @@ export default function HomePage() {
       })
       .then(answer => {
         console.log(answer)
-        console.log(answer.data.userTransactions.sort((a,b) => a-b))
+        console.log(answer.data.userTransactions.sort((a, b) => a - b))
         setOperations(answer.data.userTransactions)
         setTotalSum(answer.data.result.toFixed(2))
         setIsLoading(false)
@@ -73,10 +73,10 @@ export default function HomePage() {
           }
         </ul>
         {/* soma de todos os valores */}
-        <article>
+        <SoldBar>
           <strong>Saldo</strong>
-          <Value color={ totalSum <= 0 ? "negativo" : "positivo"}>{totalSum}</Value>
-        </article>
+          <Value color={totalSum <= 0 ? "negativo" : "positivo"}>{totalSum}</Value>
+        </SoldBar>
       </TransactionsContainer>
 
 
@@ -120,18 +120,12 @@ const TransactionsContainer = styled.article`
   background-color: #fff;
   color: #000;
   border-radius: 5px;
-  padding: 16px;
+  padding: 16px 16px 22px 16px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  article {
-    display: flex;
-    justify-content: space-between;   
-    strong {
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-  }
+
+  overflow-y: auto;
 `
 const ButtonsContainer = styled.section`
   margin-top: 15px;
@@ -169,4 +163,18 @@ const SpinContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`
+const SoldBar = styled.div`
+  width: calc(100% - 50px);
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  text-transform: uppercase;
+  font-weight: 700;
+
+  position: absolute;
+  right: 4.8%;
+  bottom: 27%;
 `
