@@ -32,7 +32,7 @@ export default function HomePage() {
         console.log(answer)
         console.log(answer.data.userTransactions.sort((a,b) => a-b))
         setOperations(answer.data.userTransactions)
-        setTotalSum(answer.data.result)
+        setTotalSum(answer.data.result.toFixed(2))
         setIsLoading(false)
         setName(answer.data.name)
       })

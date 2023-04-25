@@ -8,7 +8,7 @@ export default function ListItem(props) {
             <span>{date}</span>
             <strong>{description}</strong>
         </div>
-        <Value type={type}>{value}</Value>
+        <Value type={type}>{value.toFixed(2)}</Value>
     </ListItemContainers>)
 }
 
