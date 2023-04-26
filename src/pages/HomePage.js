@@ -62,23 +62,24 @@ export default function HomePage() {
           <BiExit />
         </LogoutBtn>
       </Header>
-      <TransactionsContainer>
-        <ul>
-          {
-            operations.length === 0 ? (<div>Não há registros de entrada ou saída.</div>) :
-              isLoading ? (<SpinContainer>
-                <CircleLoader color="purple" />
-              </SpinContainer>) :
-                (operations.map((data, index) => { return <ListItem key={index} data={data} />; }))
-          }
-        </ul>
-        {/* soma de todos os valores */}
+      <MainSection>
+        <TransactionsContainer>
+          <ul>
+            {
+              operations.length === 0 ? (<div>Não há registros de entrada ou saída.</div>) :
+                isLoading ? (<SpinContainer>
+                  <CircleLoader color="purple" />
+                </SpinContainer>) :
+                  (operations.map((data, index) => { return <ListItem key={index} data={data} />; }))
+            }
+          </ul>
+          {/* soma de todos os valores */}
+        </TransactionsContainer>
         <SoldBar>
           <strong>Saldo</strong>
           <Value color={totalSum <= 0 ? "negativo" : "positivo"}>{totalSum}</Value>
         </SoldBar>
-      </TransactionsContainer>
-
+      </MainSection>
 
       <ButtonsContainer>
         <Link to="/nova-transacao/+">
@@ -116,11 +117,12 @@ const Header = styled.header`
   color: white;
 `
 const TransactionsContainer = styled.article`
+  min-height: 55vh;
   flex-grow: 1;
   background-color: #fff;
   color: #000;
-  border-radius: 5px;
-  padding: 16px 16px 22px 16px;
+  border-radius: 5px 5px 0px 0px;
+  padding: 16px 16px 16px 16px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -165,8 +167,11 @@ const SpinContainer = styled.div`
   justify-content: center;
 `
 const SoldBar = styled.div`
-  width: calc(100% - 50px);
-  height: 25px;
+  background-color: white;
+  width: 100%;
+  height: 20px;
+  border-radius: 0px 0px 5px 5px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -174,7 +179,6 @@ const SoldBar = styled.div`
   text-transform: uppercase;
   font-weight: 700;
 
-  position: absolute;
-  right: 4.8%;
-  bottom: 27%;
+`
+const MainSection = styled.section`
 `
