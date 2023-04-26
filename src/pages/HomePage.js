@@ -120,8 +120,8 @@ const TransactionsContainer = styled.article`
   flex-grow: 1;
   background-color: #fff;
   color: #000;
-  border-radius: 5px;
-  padding: 16px 16px 22px 16px;
+  border-radius: 5px 5px 0px 0px;
+  padding: 16px 16px 16px 16px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -180,5 +180,4 @@ const SoldBar = styled.div`
 
 `
 const MainSection = styled.section`
-
 `
