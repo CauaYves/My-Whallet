@@ -117,6 +117,7 @@ const Header = styled.header`
   color: white;
 `
 const TransactionsContainer = styled.article`
+  min-height: 55vh;
   flex-grow: 1;
   background-color: #fff;
   color: #000;
