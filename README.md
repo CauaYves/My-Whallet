@@ -1,70 +1,62 @@
-# Getting Started with Create React App
+<h1 aling="center">My whallet</h1>  
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<h3>Projeto Fullstack para gerenciamento de despesas, essa aplicação conta com:
+</h3>
+<ul>
+<li>Login com validação de token seguros  </li>
 
-## Available Scripts
+<li>Cadastro de usuário e encriptação de dados  </li>
 
-In the project directory, you can run:
+<li>Filtragem de dados de usuário  </li>
 
-### `npm start`
+<li>layout simples e objetivo </li>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+<li>Fácil navegação e interação</li>
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+<li>Sistema de logout</li>
 
-### `npm test`
+<li>Login automático</li>
+</ul>  
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## preview   
 
-### `npm run build`
+![ezgif com-gif-maker](https://user-images.githubusercontent.com/108950428/234691875-347b38a4-2127-4b0c-93ed-f731c82efac4.gif)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<h1>README - Como rodar um projeto com Create React App (CRA) e NPM</h1>
+Este README fornecerá instruções sobre como executar um projeto criado com Create React App (CRA) usando o NPM (Node Package Manager).
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+<h2>Pré-requisitos</h2>
+Certifique-se de ter os seguintes softwares instalados em sua máquina:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Node.js (versão 12 ou superior)
+NPM (geralmente é instalado automaticamente junto com o Node.js)
+<h2>Configuração inicial</h2>
+Clone o repositório do projeto em sua máquina local.
 
-### `npm run eject`
+`git clone https://github.com/CauaYves/projeto14-mywallet-front.git`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Abra o terminal e navegue até o diretório raiz do projeto.
+<h2>Instalando as dependências</h2>
+No terminal, execute o seguinte comando para instalar as dependências do projeto:  
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+`npm install`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+<h2>Executando o projeto</h2>
+Após a conclusão da instalação das dependências, execute o seguinte comando para iniciar o projeto:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+`npm start`
 
-## Learn More
+Este comando iniciará o servidor de desenvolvimento e abrirá automaticamente o aplicativo no seu navegador padrão. Se não abrir automaticamente, você pode acessá-lo manualmente em http://localhost:3000.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Agora você pode começar a trabalhar no projeto e fazer alterações no código-fonte. O servidor de desenvolvimento irá atualizar automaticamente o aplicativo quando você salvar os arquivos.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+<h2>Construindo o aplicativo para produção</h2>
+Se você deseja criar uma versão otimizada do aplicativo para implantação em produção, siga as etapas abaixo:
 
-### Code Splitting
+No terminal, execute o seguinte comando para criar uma versão otimizada do aplicativo:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+`npm run build`
 
-### Analyzing the Bundle Size
+Isso criará uma pasta build no diretório raiz do projeto, contendo os arquivos otimizados para produção.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Os arquivos no diretório build podem ser implantados em um servidor web para disponibilizar o aplicativo aos usuários.
